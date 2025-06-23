@@ -38,11 +38,14 @@ router.post("/daily-report", async (req, res): Promise <any> => {
   try {
     await dbConnect();
 
-    // const DATE = new Date(); // For dynamic date
-    const DATE = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+     const DATE = new Date();
+   
+// Add 5 hours 30 minutes to get IST
+const istOffsetMs = 5.5 * 60 * 60 * 1000; // 19800000 ms
+const istDate = new Date(DATE.getTime() + istOffsetMs);
 
     // const DATE = new Date(2025, 5, 7); // Fixed date for testing
-
+   
     const day = DATE.getDate();
     const month = DATE.getMonth() + 1;
     const year = DATE.getFullYear();
@@ -57,7 +60,7 @@ router.post("/daily-report", async (req, res): Promise <any> => {
     }
 
     const newEntry = new DailyReport({
-      date: DATE.toISOString(),
+      date: istDate,
       day,
       month,
       year,
