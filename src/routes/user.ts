@@ -74,7 +74,6 @@ const istDate = new Date(DATE.getTime() + istOffsetMs);
       roomRevenue: req.body.roomRevenue,
       arr: req.body.arr,
       revPerRoom: req.body.revPerRoom,
-      expectedDeparture: req.body.expectedDeparture,
       restaurantSale: req.body.restaurantSale,
       mealPlanSale: req.body.mealPlanSale,
       barSale: req.body.barSale,
@@ -87,11 +86,12 @@ const istDate = new Date(DATE.getTime() + istOffsetMs);
       expense: req.body.expense,
       cashDeposit: req.body.cashDeposit,
       pettyCash: req.body.pettyCash,
+      pettyCashBalance: req.body.pettyCash,
       totalRevenue: req.body.totalRevenue,
       submittedBy: req.body.submittedBy,
     });
     await newEntry.save();
-
+    
     const daily = req.body;
     const totalAvailableRooms = Number(process.env.TOTAL_ROOMS);
 

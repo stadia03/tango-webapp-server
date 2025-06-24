@@ -14,7 +14,6 @@ export interface IDailyReport extends Document {
   roomRevenue: number;
   arr:number;
   revPerRoom:number;
-  expectedDeparture:number;
   restaurantSale:number;
   mealPlanSale:number;
   barSale:number;
@@ -27,6 +26,7 @@ export interface IDailyReport extends Document {
   expense:number;
   cashDeposit:number;
   pettyCash:number;
+  pettyCashBalance:number;
   totalRevenue:number;  
   submittedBy: mongoose.Types.ObjectId;
 }
@@ -46,7 +46,6 @@ const DailyReportSchema: Schema = new Schema({
   roomRevenue: { type: Number, required: true },
   arr:{ type: Number, required: true },
   revPerRoom:{ type: Number, required: true },
-  expectedDeparture:{ type: Number, required: true },
   restaurantSale:{ type: Number, required: true },
   mealPlanSale:{ type: Number, required: true },
   barSale:{ type: Number, required: true },
@@ -59,6 +58,7 @@ const DailyReportSchema: Schema = new Schema({
   expense:{ type: Number, required: true },
   cashDeposit:{ type: Number, required: true },
   pettyCash:{ type: Number, required: true },
+  pettyCashBalance:{ type: Number, required: true },
   totalRevenue:{ type: Number, required: true },
   submittedBy: { type: String, required: true },
 });
