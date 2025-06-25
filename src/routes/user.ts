@@ -14,38 +14,41 @@ router.get("/server-date", async (req, res) => {
   res.status(200).send(formattedDate);
 });
 
-router.get('/latest-report', async (req, res):Promise<any> => {
+router.get("/latest-report", async (req, res): Promise<any> => {
   try {
-
     await dbConnect();
 
-    const lastEntry = await DailyReport
-      .findOne({})
+    const lastEntry = await DailyReport.findOne({})
       .sort({ date: -1 }) // Most recent date first
       .lean(); // Plain JS object for faster read
-  
+
     if (!lastEntry) {
-      return res.status(404).json({ message: 'No daily reports found.' });
+      return res.status(404).json({ message: "No daily reports found." });
     }
 
     res.status(200).json(lastEntry);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error', details: (error as Error).message });
+    res
+      .status(500)
+      .json({
+        error: "Internal Server Error",
+        details: (error as Error).message,
+      });
   }
 });
 
-router.post("/daily-report", async (req, res): Promise <any> => {
+router.post("/daily-report", async (req, res): Promise<any> => {
   try {
     await dbConnect();
 
-     const DATE = new Date();
-   
-// Add 5 hours 30 minutes to get IST
-const istOffsetMs = 5.5 * 60 * 60 * 1000; // 19800000 ms
-const istDate = new Date(DATE.getTime() + istOffsetMs);
+    const DATE = new Date();
+
+    // Add 5 hours 30 minutes to get IST
+    const istOffsetMs = 5.5 * 60 * 60 * 1000; // 19800000 ms
+    const istDate = new Date(DATE.getTime() + istOffsetMs);
 
     // const DATE = new Date(2025, 5, 7); // Fixed date for testing
-   
+
     const day = DATE.getDate();
     const month = DATE.getMonth() + 1;
     const year = DATE.getFullYear();
@@ -86,12 +89,11 @@ const istDate = new Date(DATE.getTime() + istOffsetMs);
       expense: req.body.expense,
       cashDeposit: req.body.cashDeposit,
       pettyCash: req.body.pettyCash,
-      pettyCashBalance: req.body.pettyCash,
       totalRevenue: req.body.totalRevenue,
       submittedBy: req.body.submittedBy,
     });
     await newEntry.save();
-    
+
     const daily = req.body;
     const totalAvailableRooms = Number(process.env.TOTAL_ROOMS);
 
@@ -120,7 +122,11 @@ const istDate = new Date(DATE.getTime() + istOffsetMs);
       existingSummary.totalCake += daily.cake;
       existingSummary.totalExpense += daily.expense;
       existingSummary.totalCashDeposit += daily.cashDeposit;
-      existingSummary.totalPettyCash += daily.pettyCash;
+      // ✅ Only add pettyCash if it's positive
+      if (daily.pettyCash > 0) {
+        existingSummary.totalPettyCash += daily.pettyCash;
+      }
+
       existingSummary.totalMonthRevenue += daily.totalRevenue;
 
       await existingSummary.save();
@@ -144,7 +150,7 @@ const istDate = new Date(DATE.getTime() + istOffsetMs);
         totalCake: daily.cake,
         totalExpense: daily.expense,
         totalCashDeposit: daily.cashDeposit,
-        totalPettyCash: daily.pettyCash,
+        totalPettyCash: daily.pettyCash > 0 ? daily.pettyCash : 0,
         totalMonthRevenue: daily.totalRevenue,
       });
 
