@@ -24,7 +24,7 @@ router.post('/userLogin', async (req, res): Promise<any> => {
     const token = jwt.sign(
       { username },
       process.env.JWT_SECRET_USER as string,
-      { expiresIn: '1h' }
+      { expiresIn: '30d' }
     );
 
     res.status(201).json({ token, currentUser });
@@ -56,7 +56,7 @@ router.post('/adminLogin', async (req, res): Promise<any> => {
     const token = jwt.sign(
       { username },
       process.env.JWT_SECRET_ADMIN as string,
-      { expiresIn: '24h' }
+      { expiresIn: '30d' }
     );
 
     res.status(201).json({ token, currentUser });

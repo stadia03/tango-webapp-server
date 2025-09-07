@@ -6,10 +6,13 @@ import dbConnect from "../utils/db";
 const router = express.Router();
 
 router.get("/server-date", async (req, res) => {
-  const date = new Date();
-  const formattedDate = `${date.getDate()} ${date
-    .toLocaleString("default", { month: "long" })
-    .toUpperCase()} ${date.getFullYear()}`;
+  const DATE = new Date();
+  // const formattedDate = `${date.getDate()} ${date
+  //   .toLocaleString("default", { month: "long" })
+  //   .toUpperCase()} ${date.getFullYear()}`;
+const formattedDate = `${DATE.getUTCDate()} ${DATE.toLocaleString("default", 
+  { month: "long", timeZone: "UTC" })
+  .toUpperCase()} ${DATE.getUTCFullYear()}`;
 
   res.status(200).send(formattedDate);
 });
@@ -42,16 +45,18 @@ router.post("/daily-report", async (req, res): Promise<any> => {
     await dbConnect();
 
     const DATE = new Date();
-    // const DATE = new Date(2025, 6, 16); // Fixed date for testing
+    // const DATE = new Date(2025, 7, 21); // Fixed date for testing
 
     // Add 5 hours 30 minutes to get IST
     // const istOffsetMs = 5.5 * 60 * 60 * 1000; // 19800000 ms
     // const istDate = new Date(DATE.getTime() + istOffsetMs);
-
-  
-    const day = DATE.getDate();
-    const month = DATE.getMonth() + 1;
-    const year = DATE.getFullYear();
+    const day = DATE.getUTCDate();           
+    const month = DATE.getUTCMonth() + 1;    
+    const year = DATE.getUTCFullYear();  
+    
+    // const day = DATE.getDate();
+    // const month = DATE.getMonth() + 1;
+    // const year = DATE.getFullYear();
 
     // Check if a report for today already exists
     const alreadyExists = await DailyReport.findOne({ day, month, year });
