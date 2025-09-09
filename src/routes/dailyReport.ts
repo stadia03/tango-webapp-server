@@ -45,7 +45,7 @@ router.post("/daily-report", async (req, res): Promise<any> => {
     await dbConnect();
 
     const DATE = new Date();
-    // const DATE = new Date(2025, 7, 21); // Fixed date for testing
+    // const DATE = new Date(2025,9,23); // Fixed date for testing
 
     // Add 5 hours 30 minutes to get IST
     // const istOffsetMs = 5.5 * 60 * 60 * 1000; // 19800000 ms
@@ -95,6 +95,8 @@ router.post("/daily-report", async (req, res): Promise<any> => {
       cashDeposit: req.body.cashDeposit,
       pettyCash: req.body.pettyCash,
       totalRevenue: req.body.totalRevenue,
+      upiDeposit: req.body.upiDeposit,
+      bankDeposit: req.body.bankDeposit,
       submittedBy: req.body.submittedBy,
     });
     await newEntry.save();
@@ -131,7 +133,8 @@ router.post("/daily-report", async (req, res): Promise<any> => {
       if (daily.pettyCash > 0) {
         existingSummary.totalPettyCash += daily.pettyCash;
       }
-
+      existingSummary.totalUpiDeposit+=daily.upiDeposit;
+      existingSummary.totalBankDeposit+=daily.bankDeposit;
       existingSummary.totalMonthRevenue += daily.totalRevenue;
 
       await existingSummary.save();
@@ -156,6 +159,8 @@ router.post("/daily-report", async (req, res): Promise<any> => {
         totalExpense: daily.expense,
         totalCashDeposit: daily.cashDeposit,
         totalPettyCash: daily.pettyCash > 0 ? daily.pettyCash : 0,
+        totalUpiDeposit: daily.upiDeposit,
+        totalBankDeposit: daily.bankDeposit,
         totalMonthRevenue: daily.totalRevenue,
       });
 

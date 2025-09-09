@@ -2,7 +2,8 @@ import express, { Request, Response } from "express";
 import "dotenv/config";
 import cors from "cors";
 
-import userRoutes from "./routes/user";
+import dailyReportRoutes from "./routes/dailyReport";
+
 import authRoutes from "./routes/auth";
 import adminRoutes from "./routes/admin";
 import verifyToken from "./middleware/verifyToken";
@@ -17,11 +18,12 @@ app.get("/", (_req: Request, res: Response) => {
   res.send("server working!");
 });
 app.use("/auth", authRoutes);
-app.use("/user", verifyToken("user"), userRoutes);
+app.use("/user", verifyToken("user"), dailyReportRoutes);
+
 app.use("/admin", verifyToken("admin"), adminRoutes);
 
 // Start server on Render
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.PORT ;
 dbConnect().then(() => {
   app.listen(PORT, () => {
     console.log(`✅ Server running on port ${PORT}`);
