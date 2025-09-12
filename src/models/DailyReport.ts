@@ -28,7 +28,7 @@ export interface IDailyReport extends Document {
   pettyCash:number;
   totalRevenue:number;  
   upiDeposit:number;  
-  bankDeposit:number;  
+  cashReceived:number;  
   submittedBy: mongoose.Types.ObjectId;
 }
 
@@ -61,7 +61,7 @@ const DailyReportSchema: Schema = new Schema({
   pettyCash:{ type: Number, required: true },
   totalRevenue:{ type: Number, required: true },
   upiDeposit:{ type: Number, required: true },
-  bankDeposit:{ type: Number, required: true },
+  cashReceived:{ type: Number, required: true },
   submittedBy: { type: String, required: true },
 });
 

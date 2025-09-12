@@ -96,7 +96,7 @@ router.post("/daily-report", async (req, res): Promise<any> => {
       pettyCash: req.body.pettyCash,
       totalRevenue: req.body.totalRevenue,
       upiDeposit: req.body.upiDeposit,
-      bankDeposit: req.body.bankDeposit,
+      cashReceived: req.body.cashReceived,
       submittedBy: req.body.submittedBy,
     });
     await newEntry.save();
@@ -134,7 +134,7 @@ router.post("/daily-report", async (req, res): Promise<any> => {
         existingSummary.totalPettyCash += daily.pettyCash;
       }
       existingSummary.totalUpiDeposit+=daily.upiDeposit;
-      existingSummary.totalBankDeposit+=daily.bankDeposit;
+      existingSummary.totalCashReceived+=daily.cashReceived;
       existingSummary.totalMonthRevenue += daily.totalRevenue;
 
       await existingSummary.save();
@@ -160,7 +160,7 @@ router.post("/daily-report", async (req, res): Promise<any> => {
         totalCashDeposit: daily.cashDeposit,
         totalPettyCash: daily.pettyCash > 0 ? daily.pettyCash : 0,
         totalUpiDeposit: daily.upiDeposit,
-        totalBankDeposit: daily.bankDeposit,
+        totalCashReceived: daily.cashReceived,
         totalMonthRevenue: daily.totalRevenue,
       });
 

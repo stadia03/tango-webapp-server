@@ -19,7 +19,7 @@ export interface IMonthlySummary extends Document {
   totalPettyCash:number;
   totalMonthRevenue:number; 
   totalUpiDeposit:number;  
-  totalBankDeposit:number;  
+  totalCashReceived:number;  
 }
 
 const MonthlySummarySchema: Schema = new Schema({
@@ -41,7 +41,7 @@ const MonthlySummarySchema: Schema = new Schema({
   totalPettyCash:{ type: Number, default: 0 },
   totalMonthRevenue:{ type: Number, default: 0 },
   totalUpiDeposit:{ type: Number, default: 0 },
-  totalBankDeposit:{ type: Number, default: 0 }
+  totalCashReceived:{ type: Number, default: 0 }
 });
 
 // Compound index for finding summaries by month and year
