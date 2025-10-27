@@ -136,7 +136,8 @@ router.post("/daily-report", async (req, res): Promise<any> => {
       existingSummary.totalUpiDeposit+=daily.upiDeposit;
       existingSummary.totalCashReceived+=daily.cashReceived;
       existingSummary.totalMonthRevenue += daily.totalRevenue;
-
+      existingSummary.totalAdult+=daily.totalAdultPax;
+      existingSummary.totalChild+=daily.totalChildPax;
       await existingSummary.save();
     } else {
       const initialDayCount = 1;
@@ -162,6 +163,8 @@ router.post("/daily-report", async (req, res): Promise<any> => {
         totalUpiDeposit: daily.upiDeposit,
         totalCashReceived: daily.cashReceived,
         totalMonthRevenue: daily.totalRevenue,
+        totalAdult: daily.totalAdultPax,
+        totalChild: daily.totalChildPax
       });
 
       await newSummary.save();
