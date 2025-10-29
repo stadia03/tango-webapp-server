@@ -14,7 +14,8 @@ RUN npm install --production=false
 COPY . .
 
 # Build TypeScript into dist/
-RUN npm build
+RUN npm run build
+
 
 # Expose the port your app runs on
 EXPOSE 3000
