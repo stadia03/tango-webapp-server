@@ -1,24 +1,23 @@
-# Use a lightweight Node image
+# Use Node 18 (LTS)
 FROM node:18-alpine
 
-# Create app directory
+# Set working directory
 WORKDIR /app
 
-# Copy package files first for caching
-COPY package*.json npm.lock* ./
+# Copy only package files first
+COPY package*.json ./
 
-# Install dependencies
-RUN npm install --production=false
+# Install dependencies (including dev ones for build)
+RUN npm install
 
-# Copy the rest of the code
+# Copy all source files
 COPY . .
 
 # Build TypeScript into dist/
 RUN npm run build
 
-
-# Expose the port your app runs on
+# Expose port
 EXPOSE 3000
 
-# Command to run the server
-CMD ["node", "dist/index.js"]
+# Start server
+CMD ["npm", "start"]
